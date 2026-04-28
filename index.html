@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data-Attribute Search Demo</title>
+  <style>
+    :root {
+      --bg: #f6f2ea;
+      --panel: #fffdf8;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #0f766e;
+      --line: #d6d3d1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, #d1fae5 0%, transparent 35%),
+        radial-gradient(circle at 100% 20%, #fde68a 0%, transparent 30%),
+        var(--bg);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+      letter-spacing: 0.02em;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .search-row {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    #searchInput:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 10px 20px 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .job-listing {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .job-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #0f172a;
+    }
+
+    .job-title:hover { color: var(--accent); }
+
+    .job-brand, .job-location {
+      margin-top: 4px;
+      color: #374151;
+    }
+
+    .OurJobsApplyButton {
+      display: inline-block;
+      margin-top: 10px;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+
+    mark {
+      background: #fef08a;
+      padding: 0 2px;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 640px) {
+      body { padding: 12px; }
+      .header, .search-row { padding: 14px; }
+      ul { padding: 8px 14px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="header">
+      <h1>Text Input Search (Fuse.js + Porter Stemmer)</h1>
+      <p class="sub">Search source is only from <code>data-*</code> attributes on each job card.</p>
+    </section>
+
+    <section class="search-row">
+      <label for="searchInput">Search jobs</label>
+      <input id="searchInput" type="text" placeholder="Try: laundry, communicate, passion, room..." autocomplete="off" />
+      <div id="resultMeta" class="meta">Showing 4 / 4 items</div>
+    </section>
+
+    <ul id="jobList">
+      <li class="job-listing"
+        data-description="looking talented applicants enthusiasm passion positive attitude outstanding interpersonal communications skills fill this exciting position 17 paid statutory holidays Exceptional market leading benefits Option MPF ORSO retirement scheme Key Accountabilities Carries out laundry pressing dry cleaning services guests Maintains proper laundry records General Requirements Minimum 1-2 years working in hotel laundry preferred Simple knowledge of computer usage Microsoft applications Knowledge of answering telephone calls etiquette required Candidates with less experience will be considered as Laundry Attendant"
+        data-maison="PHK"
+        data-location="3"
+        data-job-function="RH"
+        data-job-type="Full Time"
+        data-employee-class="F"
+        data-default-language="en_GB"
+        data-deletion-status="Not Deleted"
+        data-job-brand="The Peninsula Hong Kong"
+        data-job-title="Laundry Attendant"
+        data-job-location="Hong Kong, Hong Kong SAR">
+        <div class="job-details">
+          <div class="job-brand">Rooms and Housekeeping</div>
+          <a class="job-title" href="https://careers.hshgroup.com/job-invite/48154?locale=en_GB" target="_blank" rel="noreferrer">Laundry Attendant</a>
+          <div class="job-location">Hong Kong, Hong Kong SAR</div>
+        </div>
+        <a href="https://careers.hshgroup.com/job-invite/48154?locale=en_GB" class="OurJobsApplyButton button" target="_blank" rel="noreferrer">View Role</a>
+      </li>
+
+      <li class="job-listing"
+        data-description="lead front office shift operations welcome VIP arrivals handle guest concerns with excellent communication and service recovery"
+        data-maison="PBL"
+        data-location="7"
+        data-job-function="FO"
+        data-job-type="Full Time"
+        data-employee-class="F"
+        data-default-language="en_GB"
+        data-deletion-status="Not Deleted"
+        data-job-brand="The Peninsula Beijing"
+        data-job-title="Guest Services Supervisor"
+        data-job-location="Beijing, China">
+        <div class="job-details">
+          <div class="job-brand">Front Office</div>
+          <a class="job-title" href="#" target="_blank">Guest Services Supervisor</a>
+          <div class="job-location">Beijing, China</div>
+        </div>
+        <a href="#" class="OurJobsApplyButton button" target="_blank">View Role</a>
+      </li>
+
+      <li class="job-listing"
+        data-description="prepare pastry menu support seasonal creativity maintain hygiene standards train junior chefs and coordinate banqueting tasks"
+        data-maison="PPA"
+        data-location="5"
+        data-job-function="KT"
+        data-job-type="Full Time"
+        data-employee-class="F"
+        data-default-language="en_GB"
+        data-deletion-status="Not Deleted"
+        data-job-brand="The Peninsula Paris"
+        data-job-title="Pastry Chef de Partie"
+        data-job-location="Paris, France">
+        <div class="job-details">
+          <div class="job-brand">Kitchen</div>
+          <a class="job-title" href="#" target="_blank">Pastry Chef de Partie</a>
+          <div class="job-location">Paris, France</div>
+        </div>
+        <a href="#" class="OurJobsApplyButton button" target="_blank">View Role</a>
+      </li>
+
+      <li class="job-listing"
+        data-description="analyze occupancy reports optimize room pricing and collaborate with commercial team to improve forecast accuracy"
+        data-maison="PNY"
+        data-location="9"
+        data-job-function="RV"
+        data-job-type="Full Time"
+        data-employee-class="F"
+        data-default-language="en_GB"
+        data-deletion-status="Not Deleted"
+        data-job-brand="The Peninsula New York"
+        data-job-title="Revenue Analyst"
+        data-job-location="New York, USA">
+        <div class="job-details">
+          <div class="job-brand">Revenue Management</div>
+          <a class="job-title" href="#" target="_blank">Revenue Analyst</a>
+          <div class="job-location">New York, USA</div>
+        </div>
+        <a href="#" class="OurJobsApplyButton button" target="_blank">View Role</a>
+      </li>
+    </ul>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <script type="module" src="./index.js"></script>
+</body>
+</html>
